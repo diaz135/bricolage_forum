@@ -1,0 +1,18 @@
+<!-- user_list.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Utilisateurs</title>
+</head>
+<body>
+    <h1>Liste des Utilisateurs</h1>
+    <ul>
+        {% for user in users %}
+            <li>
+                <a href="{% url 'user_profile' user_id=user.id %}">Voir le profil de {{ user.username }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

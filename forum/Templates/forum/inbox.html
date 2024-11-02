@@ -1,0 +1,18 @@
+{% extends 'forum/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Boîte de Réception</h1>
+    {% for message in messages %}
+        <div class="message">
+            <p class="sender-receiver">De : <a href="{% url 'user_profile' message.sender.id %}">{{ message.sender }}</a> <strong>À :</strong> <a href="{% url 'user_profile' message.receiver.id %}">{{ message.receiver }}</a></p>
+            <p>{{ message.content }}</p>
+            <p class="timestamp">Envoyé le {{ message.created_at|date:"d M Y à H:i" }}</p>
+            <hr>
+        </div>
+    {% empty %}
+        <p>Aucun message reçu.</p>
+    {% endfor %}
+    <a href="{% url 'home' %}">Retour à l'accueil</a>
+</div>
+{% endblock %}

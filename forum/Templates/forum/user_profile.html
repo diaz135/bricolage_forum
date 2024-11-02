@@ -1,0 +1,22 @@
+<!-- user_profile.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil de {{ user.username }}</title>
+</head>
+<body>
+    <h1>Profil de {{ user.username }}</h1>
+    <p>Email : {{ user.email }}</p>
+    <p>Inscrit depuis : {{ user.date_joined }}</p>
+
+    <h2>Autres Utilisateurs</h2>
+    <ul>
+        {% for other_user in users %}
+            <li>
+                <a href="{% url 'user_profile' user_id=other_user.id %}">Voir le profil de {{ other_user.username }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

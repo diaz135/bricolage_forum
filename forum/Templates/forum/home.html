@@ -1,0 +1,49 @@
+{% extends 'forum/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Forum de Bricolage</h1>
+    <a href="{% url 'create_publication' %}">Créer une nouvelle publication</a>
+    <hr>
+
+    {% if publications %}
+        {% for publication in publications %}
+            <div class="publication">
+                <h2>{{ publication.title }}</h2>
+                <p>{{ publication.content }}</p>
+                {% if publication.image %}
+                    <img src="{{ publication.image.url }}" alt="Image de la publication" style="max-width: 300px;">
+                {% endif %}
+                <p>Publié par <a href="{% url 'user_profile' publication.author.id %}">{{ publication.author }}</a> le {{ publication.created_at|date:"d M Y à H:i" }}</p>
+
+                <h4>Commentaires</h4>
+                {% for comment in publication.comment_set.all %}
+                    <p class="comment"><strong><a href="{% url 'user_profile' comment.author.id %}">{{ comment.author }}</a>:</strong> {{ comment.content }} ({{ comment.created_at|date:"d M Y à H:i" }})</p>
+                {% empty %}
+                    <p>Aucun commentaire.</p>
+                {% endfor %}
+
+                <form method="post" action="{% url 'like_publication' publication.id %}">
+                    {% csrf_token %}
+                    <button type="submit">
+                        {% if publication.id in liked_publications %}
+                            Retirer le like
+                        {% else %}
+                            Aimer
+                        {% endif %}
+                    </button>
+                </form>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="text" name="content" placeholder="Ajouter un commentaire" required>
+                    <button type="submit">Commenter</button>
+                </form>
+                <hr>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Aucune publication disponible.</p>
+    {% endif %}
+</div>
+{% endblock %}
